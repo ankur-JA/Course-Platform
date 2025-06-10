@@ -1,85 +1,63 @@
-# Course Selling Website
+# Course Platform
 
-## Description
-This project is a full-stack web application for selling online courses. Built using React.js for the frontend, Node.js for the backend, and MongoDB for the database. It features JWT and Google authentication, payment integration with Razorpay, and Google Analytics for tracking.
+## Overview
+This repository contains a small full-stack example for an online course marketplace. The backend is a Node.js + Express API that stores data in MongoDB using Mongoose. The frontend is built with React and uses Recoil for state management together with Material UI components.
 
-## Getting Started
+### Key Features
+- **Authentication** using JSON Web Tokens (JWT)
+- **Admin** APIs for creating and managing courses
+- **User** APIs for browsing and purchasing courses
+- **React** client with Recoil state and Material UI
 
-### Prerequisites
+## Project Structure
+```
+├── server          # Express API and MongoDB models
+│   ├── db/         # Mongoose schemas
+│   ├── routes/     # Admin and user routes
+│   └── middleware/ # JWT authentication helper
+├── src             # React application
+│   ├── components/ # React components
+│   ├── store/      # Recoil atoms and selectors
+│   └── config.js   # API base URL
+├── index.html      # Vite entry point
+└── package.json    # Frontend dependencies and scripts
+```
+
+## Prerequisites
 - Node.js (v14 or higher)
 - npm or yarn
-- MongoDB
-- Razorpay account for payments
-- Google API credentials for authentication
+- MongoDB running locally (default connection string is `mongodb://localhost:27017`)
 
-### Installation
-
-1. **Navigate to the Project Directory**
-
-    ```bash
-    cd your-repo-name
-    ```
-
-2. **Install Dependencies**
-
-    - **Frontend:** Navigate to the client folder and install dependencies:
-
-        ```bash
-        cd client
-        npm install
-        ```
-
-    - **Backend:** Navigate to the server folder and install dependencies:
-
-        ```bash
-        cd ../server
-        npm install
-        ```
-
-3. **Configure Environment Variables**
-
-    Create a `.env` file in the `server` directory and add the following environment variables:
-
-    ```env
-    MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret
-    GOOGLE_CLIENT_ID=your_google_client_id
-    GOOGLE_CLIENT_SECRET=your_google_client_secret
-    RAZORPAY_KEY_ID=your_razorpay_key_id
-    RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-    ```
-
-4. **Start the Development Server**
-
-    - **Backend:** Start the server:
-
-        ```bash
-        cd server
-        npm start
-        ```
-
-    - **Frontend:** In a new terminal, start the client:
-
-        ```bash
-        cd client
-        npm start
-        ```
-
-    The backend will be accessible at [http://localhost:5000](http://localhost:5000) and the frontend at [http://localhost:3000](http://localhost:3000).
+## Setup
+1. **Install dependencies**
+   ```bash
+   npm install
+   cd server && npm install
+   ```
+2. **Start MongoDB**
+   Ensure a MongoDB instance is running locally. The server connects to the `courses` database on startup.
+3. **Run the backend**
+   ```bash
+   node index.js
+   ```
+   This starts the API server on `http://localhost:3000`.
+4. **Run the frontend** (from the repository root)
+   ```bash
+   npm run dev
+   ```
+   The React development server will start on Vite's default port (usually `5173`).
 
 ## Usage
+- Create an **admin** account via the `/admin/signup` endpoint or the admin signup page.
+- Admins can create, update, and list courses.
+- Regular **users** can sign up, browse published courses, and purchase them.
+- Purchased courses are stored in the user's document and can be viewed on the "Purchased" page.
 
-- **Course Sellers:** Sign up and log in to add and manage your courses.
-- **Users:** Log in with Google, browse available courses, and make payments through Razorpay.
+## Environment Variables
+For a production deployment you should store sensitive values in environment variables. The project currently uses a hardcoded JWT secret (`SECRET` in `server/middleware/auth.js`); feel free to replace it with your own value by reading it from `process.env.SECRET`.
 
 ## Contributing
-
-Contributions are welcome! Please submit a pull request with your changes or improvements.
+Pull requests are welcome. Please open an issue first to discuss major changes.
 
 ## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-For any questions or feedback, please contact [your.email@example.com](mailto:your.email@example.com).
+This project is licensed under the MIT License.
