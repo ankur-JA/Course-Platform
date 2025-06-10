@@ -5,11 +5,13 @@ import { isUserLoading } from "../store/selectors/isUserLoading";
 import {useSetRecoilState, useRecoilValue} from "recoil";
 import { userState } from "../store/atoms/user.js";
 import { userEmailState } from "../store/selectors/userEmail"
+import { userRoleState } from "../store/selectors/userRole"
 
 function Appbar({}) {
     const navigate = useNavigate()
     const userLoading = useRecoilValue(isUserLoading);
     const userEmail = useRecoilValue(userEmailState);
+    const userRole = useRecoilValue(userRoleState);
     const setUser = useSetRecoilState(userState);
 
     if (userLoading) {
@@ -28,24 +30,25 @@ function Appbar({}) {
             }}>
                 <Typography variant={"h6"}>Coursera</Typography>
             </div>
-    
+
             <div style={{display: "flex"}}>
                 <div style={{marginRight: 10, display: "flex"}}>
-                <div style={{marginRight: 10}}>
-                        <Button
-                            onClick={() => {
-                                navigate("/addcourse")
-                            }}
-                        >Add course</Button>
-                    </div>
-
+                {userRole === 'admin' && <>
                     <div style={{marginRight: 10}}>
-                        <Button
-                            onClick={() => {
-                                navigate("/courses")
-                            }}
-                        >Courses</Button>
+                        <Button onClick={() => { navigate("/addcourse") }}>Add course</Button>
                     </div>
+                    <div style={{marginRight: 10}}>
+                        <Button onClick={() => { navigate("/courses") }}>Courses</Button>
+                    </div>
+                </>}
+                {userRole === 'user' && <>
+                    <div style={{marginRight: 10}}>
+                        <Button onClick={() => { navigate("/user/courses") }}>Browse</Button>
+                    </div>
+                    <div style={{marginRight: 10}}>
+                        <Button onClick={() => { navigate("/purchased") }}>Purchased</Button>
+                    </div>
+                </>}
 
                     <Button
                         variant={"contained"}
@@ -53,7 +56,8 @@ function Appbar({}) {
                             localStorage.setItem("token", null);
                             setUser({
                                 isLoading: false,
-                                userEmail: null
+                                userEmail: null,
+                                role: null
                             })
                         }}
                     >Logout</Button>
@@ -77,9 +81,7 @@ function Appbar({}) {
                 <div style={{marginRight: 10}}>
                     <Button
                         variant={"contained"}
-                        onClick={() => {
-                            navigate("/signup")
-                        }}
+                        onClick={() => { navigate("/signup") }}
                     >Signup</Button>
                 </div>
                 <div>
@@ -89,6 +91,12 @@ function Appbar({}) {
                             navigate("/signin")
                         }}
                     >Signin</Button>
+                </div>
+                <div style={{marginLeft: 10}}>
+                    <Button variant={"contained"} onClick={() => { navigate("/user/signup") }}>User Signup</Button>
+                </div>
+                <div style={{marginLeft: 10}}>
+                    <Button variant={"contained"} onClick={() => { navigate("/user/signin") }}>User Signin</Button>
                 </div>
             </div>
         </div>
